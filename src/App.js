@@ -2,6 +2,7 @@ import "./App.scss";
 import Login from "./components/Login/Login";
 import Nav from "./components/Navigation/Nav";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./components/Register/Register";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/contact" element={"contact"} />
                     <Route path="/about" element={"about"} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                     <Route path="*" element={"404 not found"} />
                 </Routes>
             </div>
