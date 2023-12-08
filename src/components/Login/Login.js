@@ -20,8 +20,10 @@ const Login = (props) => {
     };
 
     const handleLogin = async () => {
+        //reset field input
         setObjValidInput(defaultObjValidInput);
 
+        // validate form login
         if (!valueLogin) {
             setObjValidInput({
                 ...defaultObjValidInput,
@@ -40,6 +42,7 @@ const Login = (props) => {
             return;
         }
 
+        // call API login with axios
         await loginUser(valueLogin, password);
     };
 
@@ -50,8 +53,7 @@ const Login = (props) => {
                     <div className="content-left d-none col-sm-7 d-sm-block">
                         <div className="brand">Dong Nguyen IT</div>
                         <div className="detail">
-                            Dong Nguyen IT helps you connect and share with the
-                            people in your life
+                            Dong Nguyen IT helps you connect and share with the people in your life
                         </div>
                     </div>
                     <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3">
@@ -78,10 +80,7 @@ const Login = (props) => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <button
-                            className="btn btn-primary"
-                            onClick={handleLogin}
-                        >
+                        <button className="btn btn-primary" onClick={handleLogin}>
                             Login
                         </button>
                         <span className="text-center">
@@ -91,10 +90,7 @@ const Login = (props) => {
                         </span>
                         <hr />
                         <div className="text-center">
-                            <button
-                                className="btn btn-success"
-                                onClick={handleCreateNewAccount}
-                            >
+                            <button className="btn btn-success" onClick={handleCreateNewAccount}>
                                 Create new account
                             </button>
                         </div>

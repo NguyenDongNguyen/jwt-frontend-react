@@ -30,8 +30,10 @@ const Register = (props) => {
     }, []);
 
     const isValidInputs = () => {
+        //reset field input
         setObjCheckInput(defaultValidInput);
 
+        //validate form register
         if (!email) {
             toast.error("Email is required");
             setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
@@ -72,12 +74,7 @@ const Register = (props) => {
 
         if (check === true) {
             // call API register with axios
-            let response = await registerNewUser(
-                email,
-                phone,
-                username,
-                password
-            );
+            let response = await registerNewUser(email, phone, username, password);
 
             // show result from server -> client
             let serverData = response.data;
@@ -87,6 +84,18 @@ const Register = (props) => {
                 history("/login");
             } else {
                 toast.error(serverData.EM);
+                if (serverData.DT === "email error") {
+                    setObjCheckInput({
+                        ...defaultValidInput,
+                        isValidEmail: false,
+                    });
+                }
+                if (serverData.DT === "phone error") {
+                    setObjCheckInput({
+                        ...defaultValidInput,
+                        isValidPhone: false,
+                    });
+                }
             }
         }
     };
@@ -98,8 +107,7 @@ const Register = (props) => {
                     <div className="content-left d-none col-sm-7 d-sm-block">
                         <div className="brand">Dong Nguyen IT</div>
                         <div className="detail">
-                            Dong Nguyen IT helps you connect and share with the
-                            people in your life
+                            Dong Nguyen IT helps you connect and share with the people in your life
                         </div>
                     </div>
                     <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3">
@@ -167,23 +175,15 @@ const Register = (props) => {
                                 }
                                 placeholder="Re-enter password"
                                 value={confirmPassword}
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                         </div>
-                        <button
-                            className="btn btn-primary"
-                            onClick={handleRegister}
-                        >
+                        <button className="btn btn-primary" onClick={handleRegister}>
                             Register
                         </button>
                         <hr />
                         <div className="text-center">
-                            <button
-                                className="btn btn-success"
-                                onClick={handleLogin}
-                            >
+                            <button className="btn btn-success" onClick={handleLogin}>
                                 Already've an account. Login
                             </button>
                         </div>
