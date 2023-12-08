@@ -1,8 +1,8 @@
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { registerNewUser } from "../../services/userService";
 
 const Register = (props) => {
     const [email, setEmail] = useState("");
@@ -66,16 +66,28 @@ const Register = (props) => {
         return true;
     };
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
+        //validate form
         let check = isValidInputs();
 
-        if (check) {
-            axios.post("http://localhost:8080/api/v1/register", {
+        if (check === true) {
+            // call API register with axios
+            let response = await registerNewUser(
                 email,
                 phone,
                 username,
-                password,
-            });
+                password
+            );
+
+            // show result from server -> client
+            let serverData = response.data;
+            if (+serverData.EC === 0) {
+                // dấu + convert kiểu string -> number
+                toast.success(serverData.EM);
+                history("/login");
+            } else {
+                toast.error(serverData.EM);
+            }
         }
     };
 
