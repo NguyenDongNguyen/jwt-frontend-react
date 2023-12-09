@@ -12,7 +12,6 @@ const AppRoutes = (props) => {
     return (
         <>
             <Routes>
-                <Route path="/" element={"home"} />
                 <Route path="/users" element={<PrivateRoutes Component={User} />} />
                 <Route
                     path="/projects"
@@ -20,6 +19,7 @@ const AppRoutes = (props) => {
                 />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/" element={<PrivateRoutes Component={"Home"} />} />
                 <Route path="*" element={"404 not found"} />
             </Routes>
         </>

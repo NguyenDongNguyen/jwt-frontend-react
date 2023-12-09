@@ -14,10 +14,10 @@ const Nav = (props) => {
     return (
         <>
             {isShow === true && (
-                <div class="topnav">
+                <div className="topnav">
                     <NavLink to="/">Home</NavLink>
-                    <NavLink to="/news">News</NavLink>
-                    <NavLink to="/contact">Contact</NavLink>
+                    <NavLink to="/users">Users</NavLink>
+                    <NavLink to="/projects">Projects</NavLink>
                     <NavLink to="/about">About</NavLink>
                 </div>
             )}
