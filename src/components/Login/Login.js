@@ -43,7 +43,30 @@ const Login = (props) => {
         }
 
         // call API login with axios
-        await loginUser(valueLogin, password);
+        let response = await loginUser(valueLogin, password);
+
+        if (response && response.data && +response.data.EC === 0) {
+            // dấu + convert string -> number
+            //success
+            let data = {
+                isAuthenticated: true,
+                token: "fake token",
+            };
+            sessionStorage.setItem("account", JSON.stringify(data));
+            history("/users");
+            window.location.reload();
+        }
+
+        if (response && response.data && +response.data.EC !== 0) {
+            //error
+            toast.error(response.data.EM);
+        }
+    };
+
+    const handlePressEnter = (event) => {
+        if (event.keyCode === 13 && event.code === "Enter") {
+            handleLogin();
+        }
     };
 
     return (
@@ -53,7 +76,8 @@ const Login = (props) => {
                     <div className="content-left d-none col-sm-7 d-sm-block">
                         <div className="brand">Dong Nguyen IT</div>
                         <div className="detail">
-                            Dong Nguyen IT helps you connect and share with the people in your life
+                            Dong Nguyen IT helps you connect and share with the
+                            people in your life
                         </div>
                     </div>
                     <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3">
@@ -79,6 +103,7 @@ const Login = (props) => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyUp={(e) => handlePressEnter(e)}
                         />
                         <button className="btn btn-primary" onClick={handleLogin}>
                             Login
@@ -90,7 +115,10 @@ const Login = (props) => {
                         </span>
                         <hr />
                         <div className="text-center">
-                            <button className="btn btn-success" onClick={handleCreateNewAccount}>
+                            <button
+                                className="btn btn-success"
+                                onClick={handleCreateNewAccount}
+                            >
                                 Create new account
                             </button>
                         </div>
