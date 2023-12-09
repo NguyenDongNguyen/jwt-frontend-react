@@ -8,6 +8,7 @@ const PrivateRoutes = ({ Component }) => {
         let session = sessionStorage.getItem("account");
         if (!session) {
             history("/login");
+            window.location.reload();
         }
     }, []);
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Login.scss";
@@ -14,6 +14,15 @@ const Login = (props) => {
         isValidPassword: true,
     };
     const [objValidInput, setObjValidInput] = useState(defaultObjValidInput);
+
+    // handle if user had signin then not return login page
+    useEffect(() => {
+        let session = sessionStorage.getItem("account");
+        if (session) {
+            history("/");
+            window.location.reload();
+        }
+    }, []);
 
     const handleCreateNewAccount = () => {
         history("/register");
