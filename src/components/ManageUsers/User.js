@@ -13,6 +13,8 @@ const User = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
 
+    const [isShowModalUser, setIsShowModalUser] = useState(false);
+
     // lưu item muốn xoá ra ngoài func -> render lại UI sẽ ko bị set lại gtri
     const currentUser = useRef();
 
@@ -56,6 +58,10 @@ const User = () => {
         }
     };
 
+    const onHideModalUser = () => {
+        setIsShowModalUser(false);
+    };
+
     return (
         <>
             <div className="container">
@@ -66,7 +72,12 @@ const User = () => {
                         </div>
                         <div className="actions">
                             <button className="btn btn-success">Refesh</button>
-                            <button className="btn btn-primary">Add new user</button>
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => setIsShowModalUser(true)}
+                            >
+                                Add new user
+                            </button>
                         </div>
                     </div>
                     <div className="user-body">
@@ -155,7 +166,11 @@ const User = () => {
                 confirmDeleteUser={confirmDeleteUser}
             />
 
-            <ModalUser title={"Create new user"} />
+            <ModalUser
+                title={"Create new user"}
+                onHide={onHideModalUser}
+                show={isShowModalUser}
+            />
         </>
     );
 };
