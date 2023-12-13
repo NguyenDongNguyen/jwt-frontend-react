@@ -14,9 +14,14 @@ const User = () => {
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
 
     const [isShowModalUser, setIsShowModalUser] = useState(false);
+    const [actionModalUser, setActionModalUser] = useState("CREATE");
+    const [dataModalUser, setDataModalUser] = useState({});
 
     // lưu item muốn xoá ra ngoài func -> render lại UI sẽ ko bị set lại gtri
     const currentUser = useRef();
+
+    // lưu item muốn update ra ngoài func -> render lại UI sẽ ko bị set lại gtri
+    // const currentUserUpdate = useRef();
 
     useEffect(() => {
         fetchUsers();
@@ -58,8 +63,26 @@ const User = () => {
         }
     };
 
-    const onHideModalUser = () => {
+    const onHideModalUser = async () => {
         setIsShowModalUser(false);
+        //khi ẩn modal user thì set lại data ô input bằng ''
+        setDataModalUser({});
+        //reset lại dữ liệu hiển thị sau khi thêm mới success
+        await fetchUsers();
+    };
+
+    const handleCreateUser = () => {
+        setIsShowModalUser(true);
+        setActionModalUser("CREATE");
+    };
+
+    const handleEditUser = (user) => {
+        //set giá trị muốn update cho hook useRef
+        // currentUserUpdate.current = user;
+        setActionModalUser("UPDATE");
+        //fill data vào các ô input trong model user update
+        setDataModalUser(user);
+        setIsShowModalUser(true);
     };
 
     return (
@@ -74,7 +97,7 @@ const User = () => {
                             <button className="btn btn-success">Refesh</button>
                             <button
                                 className="btn btn-primary"
-                                onClick={() => setIsShowModalUser(true)}
+                                onClick={() => handleCreateUser()}
                             >
                                 Add new user
                             </button>
@@ -97,7 +120,12 @@ const User = () => {
                                     <>
                                         {listUsers.map((item, index) => (
                                             <tr key={`user ${index}`}>
-                                                <td>{index + 1}</td>
+                                                <td>
+                                                    {(currentPage - 1) *
+                                                        currentLimit +
+                                                        index +
+                                                        1}
+                                                </td>
                                                 <td>{item.id}</td>
                                                 <td>{item.email}</td>
                                                 <td>{item.username}</td>
@@ -107,7 +135,12 @@ const User = () => {
                                                         : ""}
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-warning mx-3">
+                                                    <button
+                                                        className="btn btn-warning mx-3"
+                                                        onClick={() =>
+                                                            handleEditUser(item)
+                                                        }
+                                                    >
                                                         Edit
                                                     </button>
                                                     <button
@@ -167,9 +200,11 @@ const User = () => {
             />
 
             <ModalUser
-                title={"Create new user"}
                 onHide={onHideModalUser}
                 show={isShowModalUser}
+                action={actionModalUser}
+                // data để fill vào các ô input modal user update
+                dataModalUser={dataModalUser}
             />
         </>
     );
