@@ -1,7 +1,11 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { fetchGroup, createNewUser } from "../../services/userService";
+import {
+    fetchGroup,
+    createNewUser,
+    updateCurrentUser,
+} from "../../services/userService";
 import { toast } from "react-toastify";
 
 const ModalUser = (props) => {
@@ -77,6 +81,9 @@ const ModalUser = (props) => {
     };
 
     const checkValidateInputs = () => {
+        if (action === "UPDATE") {
+            return true;
+        }
         let arr = ["email", "phone", "password", "group"];
         let check = true;
         for (let i = 0; i < arr.length; i++) {
@@ -97,14 +104,25 @@ const ModalUser = (props) => {
     const handleConfirmUser = async () => {
         let check = checkValidateInputs();
         if (check === true) {
-            let res = await createNewUser({
-                ...userData,
-                groupId: userData[`group`],
-            });
+            let res =
+                action === "CREATE"
+                    ? await createNewUser({
+                          ...userData,
+                          groupId: userData[`group`],
+                      })
+                    : await updateCurrentUser({
+                          ...userData,
+                          groupId: userData[`group`],
+                      });
+
             if (res.data && res.data.EC === 0) {
                 props.onHide();
                 //reset lại các ô input trong form và set gtri default cho group
-                setUserData({ ...defaultUserData, group: userGroups[0].id });
+                setUserData({
+                    ...defaultUserData,
+                    group:
+                        userGroups && userGroups.length > 0 ? userGroups[0].id : "",
+                });
             }
             if (res.data && res.data.EC !== 0) {
                 toast.error(res.data.EM);
