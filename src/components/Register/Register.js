@@ -74,10 +74,8 @@ const Register = (props) => {
 
         if (check === true) {
             // call API register with axios
-            let response = await registerNewUser(email, phone, username, password);
+            let serverData = await registerNewUser(email, phone, username, password);
 
-            // show result from server -> client
-            let serverData = response.data;
             if (+serverData.EC === 0) {
                 // dấu + convert kiểu string -> number
                 toast.success(serverData.EM);
@@ -107,7 +105,8 @@ const Register = (props) => {
                     <div className="content-left d-none col-sm-7 d-sm-block">
                         <div className="brand">Dong Nguyen IT</div>
                         <div className="detail">
-                            Dong Nguyen IT helps you connect and share with the people in your life
+                            Dong Nguyen IT helps you connect and share with the
+                            people in your life
                         </div>
                     </div>
                     <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3">
@@ -183,7 +182,10 @@ const Register = (props) => {
                         </button>
                         <hr />
                         <div className="text-center">
-                            <button className="btn btn-success" onClick={handleLogin}>
+                            <button
+                                className="btn btn-success"
+                                onClick={handleLogin}
+                            >
                                 Already've an account. Login
                             </button>
                         </div>
