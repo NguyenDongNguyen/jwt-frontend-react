@@ -54,7 +54,7 @@ const User = () => {
 
     const confirmDeleteUser = async () => {
         let response = await deleteUser(currentUser.current);
-        if (response && response.data && response.EC === 0) {
+        if (response && response.EC === 0) {
             toast.success(response.EM);
             await fetchUsers();
             setIsShowModalDelete(false);

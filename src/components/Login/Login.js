@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Login.scss";
 import { loginUser } from "../../services/userService";
+import { UserContext } from "../../context/UserContext";
 
 const Login = (props) => {
+    const { loginContext } = useContext(UserContext);
+
     let history = useNavigate();
 
     const [valueLogin, setValueLogin] = useState("");
@@ -57,13 +60,22 @@ const Login = (props) => {
         if (response && +response.EC === 0) {
             // dấu + convert string -> number
             //success
+            let groupWithRoles = response.DT.groupWithRoles;
+            let email = response.DT.email;
+            let username = response.DT.username;
+            let token = response.DT.access_token;
+
             let data = {
                 isAuthenticated: true,
-                token: "fake token",
+                token,
+                account: { groupWithRoles, email, username },
             };
+            console.log(">>> check data: ", data);
             sessionStorage.setItem("account", JSON.stringify(data));
+            loginContext(data);
+
             history("/users");
-            window.location.reload();
+            // window.location.reload();
         }
 
         if (response && +response.EC !== 0) {
