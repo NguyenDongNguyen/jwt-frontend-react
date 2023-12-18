@@ -18,8 +18,8 @@ const AppRoutes = (props) => {
             <Routes>
                 <Route element={<PrivateRoutes />}>
                     <Route path="/users" element={<User />} />
-                    {/* <Route path="/projects" element={<Project />} />
-                    <Route path="/" element={<Home />} /> */}
+                    <Route path="/projects" element={<Project />} />
+                    <Route path="/" element={<Home />} />
                 </Route>
 
                 <Route path="/login" element={<Login />} />

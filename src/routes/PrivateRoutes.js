@@ -1,9 +1,12 @@
 import { useEffect, useContext } from "react";
-import { redirect, useNavigate, Outlet } from "react-router-dom";
+import { redirect, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
-const PrivateRoutes = ({ Component }) => {
+const PrivateRoutes = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const { user } = useContext(UserContext);
+    // {user && user.isAuthenticated === true ? <Outlet /> : redirect("/login")}
     if (user && user.isAuthenticated === true) {
         return (
             <>
@@ -11,7 +14,11 @@ const PrivateRoutes = ({ Component }) => {
             </>
         );
     } else {
-        return redirect("home");
+        if (location.pathname === "/") {
+            navigate("/login");
+            window.location.reload();
+        }
+        navigate("/login");
     }
 };
 
