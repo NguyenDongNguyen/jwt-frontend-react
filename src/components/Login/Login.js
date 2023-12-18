@@ -18,15 +18,6 @@ const Login = (props) => {
     };
     const [objValidInput, setObjValidInput] = useState(defaultObjValidInput);
 
-    // handle if user had signin then not return login page
-    useEffect(() => {
-        let session = sessionStorage.getItem("account");
-        if (session) {
-            history("/");
-            window.location.reload();
-        }
-    }, []);
-
     const handleCreateNewAccount = () => {
         history("/register");
     };
@@ -70,12 +61,10 @@ const Login = (props) => {
                 token,
                 account: { groupWithRoles, email, username },
             };
-            console.log(">>> check data: ", data);
-            sessionStorage.setItem("account", JSON.stringify(data));
+
             loginContext(data);
 
             history("/users");
-            // window.location.reload();
         }
 
         if (response && +response.EC !== 0) {

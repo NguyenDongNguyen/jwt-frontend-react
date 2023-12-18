@@ -9,17 +9,21 @@ const AppRoutes = (props) => {
         return <div>Projects</div>;
     };
 
+    const Home = () => {
+        return <div>Home</div>;
+    };
+
     return (
         <>
             <Routes>
-                <Route path="/users" element={<PrivateRoutes Component={User} />} />
-                <Route
-                    path="/projects"
-                    element={<PrivateRoutes Component={Project} />}
-                />
+                <Route element={<PrivateRoutes />}>
+                    <Route path="/users" element={<User />} />
+                    {/* <Route path="/projects" element={<Project />} />
+                    <Route path="/" element={<Home />} /> */}
+                </Route>
+
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/" element={<PrivateRoutes Component={"Home"} />} />
                 <Route path="*" element={"404 not found"} />
             </Routes>
         </>
