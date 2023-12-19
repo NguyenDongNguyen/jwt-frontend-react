@@ -19,9 +19,9 @@ const AppRoutes = (props) => {
                 <Route element={<PrivateRoutes />}>
                     <Route path="/users" element={<User />} />
                     <Route path="/projects" element={<Project />} />
-                    <Route path="/" element={<Home />} />
                 </Route>
 
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={"404 not found"} />

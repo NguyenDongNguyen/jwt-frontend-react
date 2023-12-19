@@ -14,11 +14,13 @@ const PrivateRoutes = () => {
             </>
         );
     } else {
-        if (location.pathname === "/") {
-            navigate("/login");
-            window.location.reload();
-        }
+        // if (location.pathname === "/") {
+        //     navigate("/login");
+        //     window.location.reload();
+        // }
+        // navigate("/login");
         navigate("/login");
+        window.location.reload();
     }
 };
 
