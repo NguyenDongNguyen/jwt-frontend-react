@@ -1,7 +1,11 @@
 import "./GroupRole.scss";
 import { useEffect, useState } from "react";
 import { fetchGroup } from "../../services/userService";
-import { fetchAllRole, fetchRolesByGroup } from "../../services/roleService";
+import {
+    fetchAllRole,
+    fetchRolesByGroup,
+    assignRolesToGroup,
+} from "../../services/roleService";
 
 import { toast } from "react-toastify";
 import { values } from "lodash";
@@ -35,7 +39,7 @@ const GroupRole = () => {
     };
 
     const handleOnchangeGroup = async (value) => {
-        setSelectGroup(values);
+        setSelectGroup(value);
         if (value) {
             let data = await fetchRolesByGroup(value);
             if (data && +data.EC === 0) {
@@ -78,6 +82,37 @@ const GroupRole = () => {
                 !_assignRolesByGroup[foundIndex].isAssigned;
         }
         setAssignRolesByGroup(_assignRolesByGroup);
+    };
+
+    //convert định dạng dlieu cho đúng trước khi lưu vào DB
+    const buildDataToSave = () => {
+        //  data = {groupId: 4, groupROles: [{}, {}]}
+        let result = {};
+        const _assignRolesByGroup = [...assignRolesByGroup];
+        result.groupId = selectGroup;
+        // lọc ra những role đã được
+        let groupRolesFilter = _assignRolesByGroup.filter(
+            (item) => item.isAssigned === true
+        );
+        // lấy ra những id của role đc chọn để convert dlieu đưa vào DB
+        let finalGroupRoles = groupRolesFilter.map((item) => {
+            let data = { groupId: +selectGroup, groupRoles: +item.id };
+            return data;
+        });
+        result.groupRoles = finalGroupRoles;
+        return result;
+    };
+
+    const handleSave = async () => {
+        let data = buildDataToSave();
+        console.log("check data: ", data);
+        //call api để gán quyền cho group
+        let res = await assignRolesToGroup(data);
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+        } else {
+            toast.error(res.EM);
+        }
     };
 
     return (
@@ -142,7 +177,9 @@ const GroupRole = () => {
                             </div>
                         )}
                         <div className="mt-3">
-                            <button className="btn btn-warning">Save</button>
+                            <button className="btn btn-warning" onClick={handleSave}>
+                                Save
+                            </button>
                         </div>
                     </div>
                 </div>
