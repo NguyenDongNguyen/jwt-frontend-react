@@ -96,7 +96,7 @@ const GroupRole = () => {
         );
         // lấy ra những id của role đc chọn để convert dlieu đưa vào DB
         let finalGroupRoles = groupRolesFilter.map((item) => {
-            let data = { groupId: +selectGroup, groupRoles: +item.id };
+            let data = { groupId: +selectGroup, roleId: +item.id };
             return data;
         });
         result.groupRoles = finalGroupRoles;
