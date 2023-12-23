@@ -7,12 +7,19 @@ import { useEffect, useState, useContext } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import { Rings } from "react-loader-spinner";
 import { UserContext } from "./context/UserContext";
+import Scrollbars from "react-custom-scrollbars";
 
 function App() {
     const { user } = useContext(UserContext);
+    const [scrollHeight, setScrollHeight] = useState(0);
+
+    useEffect(() => {
+        let windownHeight = window.innerHeight;
+        setScrollHeight(windownHeight);
+    }, [user]);
 
     return (
-        <>
+        <Scrollbars autoHide style={{ height: scrollHeight }}>
             <Router>
                 {user && user.isLoading ? (
                     <div className="loading-container">
@@ -50,7 +57,7 @@ function App() {
                 pauseOnHover
                 theme="light"
             />
-        </>
+        </Scrollbars>
     );
 }
 

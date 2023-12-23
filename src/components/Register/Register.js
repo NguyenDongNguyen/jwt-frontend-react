@@ -1,10 +1,13 @@
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { registerNewUser } from "../../services/userService";
+import { UserContext } from "../../context/UserContext";
 
 const Register = (props) => {
+    const { user } = useContext(UserContext);
+
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [username, setUsername] = useState("");
@@ -23,11 +26,12 @@ const Register = (props) => {
         history("/login");
     };
 
+    // check ng dùng đã login thì ko cho vào register nữa
     useEffect(() => {
-        // axios
-        // .get("http://localhost:8080/api/v1/test-api")
-        // .then((data) => console.log(">>> check axios: ", data));
-    }, []);
+        if (user && user.isAuthenticated) {
+            history("/");
+        }
+    }, [user]);
 
     const isValidInputs = () => {
         //reset field input
